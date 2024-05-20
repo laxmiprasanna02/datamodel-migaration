@@ -1,0 +1,26 @@
+{
+  "stage": "test",
+  "accountId": "931187157570",
+  "region": "eu-west-1",
+  "dynamodbTableConfig": {
+    "user": {"name": "EU-test-platform-users"},
+    "pool": {"name": "EU-test-platform-pools" },
+    "legaldocument": {"name": "EU-test-platform-legal-documents" },
+    "device": {"name": "EU-test-platform-devices" },
+    "alert": {"name": "EU-test-platform-alerts" },
+    "configfile": {"name": "EU-test-platform-config-files" },
+    "deviceconfigfile": {"name": "EU-test-platform-device-config-files"}
+  },
+  "timestreamConfig":{
+      "sensortelemetry": {"table": "sensor_values","database": "EU-test-platform-telemetry"}
+  },
+  "number_of_objects": {
+    "legaldocument": 50,
+    "phone": 50,
+    "pool": 50,
+    "poolsharingcode": 50,
+    "user": 50,
+    "userlegaldocument": 50,
+    "userpool": 2
+  }
+}
