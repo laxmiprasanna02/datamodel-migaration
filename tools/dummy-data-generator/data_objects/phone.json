@@ -1,0 +1,43 @@
+{
+  "name": "phone",
+  "db": {
+    "type": "dynamodb",
+    "alias": "user"
+  },
+  "fakerArguments": [
+    {"phone_format":{"text":"PHONE#^^^^^^^^-^^^^-^^^^-^^^^-^^^^^^^^^^^^"}},
+    {"app_versions":{"ext_word_list":["1.0.0","1.0.1","1.0.2","1.0.3","1.0.4","1.0.5"]}},
+    {"created_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"updated_ts":{"min":1555060163000,"max": 1649761763000}}
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dependencies": ["user"],
+  "dataObject": {
+    "PK": "@reference:$.user.objects.*[{randomNumber}%len(@)].PK",
+    "SK": "hexify:phone_format",
+    "createdAt": "random_int:created_ts",
+    "updatedAt": "random_int:updated_ts",
+    "token":    {   "token": "ios_platform_token",
+    "firebaseProjectId": "word",
+    "messagingSenderId": "word"},
+    "appPackage": {
+      "name": "word",
+      "packageName": "word",
+      "version": "@1.0.0",
+      "language": "word",
+      "phone":{
+        "osName": "word",
+        "osVersion": "word",
+        "osLocales": "word",
+        "timezoneName": "word",
+        "manufacturer": "word",
+        "model": "word",
+        "product": "word",
+        "screenWidth": "word",
+        "screenHeight": "word",
+        "screenPixelRatio": "word"
+      }
+    }
+  }
+}

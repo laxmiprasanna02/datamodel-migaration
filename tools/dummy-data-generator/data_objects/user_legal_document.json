@@ -1,0 +1,21 @@
+{
+  "name": "userlegaldocument",
+  "db": {
+    "type": "dynamodb",
+    "alias": "user"
+  },
+  "fakerArguments": [
+    {"created_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"updated_ts":{"min":1555060163000,"max": 1649761763000}}
+  ],
+      "primary_keys": ["PK","SK"],
+
+  "dependencies": ["user","legaldocument"],
+  "dataObject": {
+    "PK": "@reference:$.user.objects.*[{randomNumber}%len(@)].PK",
+    "SK": "@reference:$.legaldocument.objects.*[{randomNumber}%len(@)].SK",
+    "createdAt": "random_int:created_ts",
+    "type": "@privacyPolicy",
+    "status": "@approved"
+   }
+}

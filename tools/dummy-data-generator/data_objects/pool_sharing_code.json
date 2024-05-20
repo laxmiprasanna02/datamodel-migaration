@@ -1,0 +1,23 @@
+{
+  "name": "poolsharingcode",
+  "db": {
+    "type": "dynamodb",
+    "alias": "pool"
+  },
+  "fakerArguments": [
+
+        {"pool_sharing_code_format":{"text":"^^^^^^^^^^^^^^^"}},
+            {"ttl_format":{"start_datetime":"+3d","end_datetime":"+9d"}}
+
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dependencies": ["pool"],
+  "dataObject": {
+    "PK": "@reference:$.pool.objects.*[{randomNumber}%len(@)].PK",
+    "SK": "@SHARING_CODE",
+    "code": "hexify:pool_sharing_code_format",
+    "accessLevel": "@viewer",
+    "ttl": "unix_time:ttl_format"
+   }
+}

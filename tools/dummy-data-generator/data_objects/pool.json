@@ -1,0 +1,35 @@
+{
+  "name": "pool",
+  "db": {
+    "type": "dynamodb",
+    "alias": "pool"
+  },
+  "fakerArguments": [
+    {"pool_format":{"text":"POOL#^^^^^^^^-^^^^-^^^^-^^^^-^^^^^^^^^^^^"}},
+    {"created_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"updated_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"backup_code_format":{"text":"^^^^^^^^^^^^^^^^^"}},
+    {"temperature_units":{"ext_word_list":["celsius","fahrenheit"]}},
+    {"metric_system":{"ext_word_list":["metric","imperial","us"]}}
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dataObject": {
+    "PK": "hexify:pool_format",
+    "SK": "@###PK",
+    "name": "company",
+    "createdAt": "random_int:created_ts",
+    "updatedAt": "random_int:updated_ts",
+    "geolocation": {"latitude": "random_int","longitude":"random_int","countryCode": "address","locality": "country_code" },
+    "characteristics": {
+      "constructionYear": "year",
+      "waterproof": "@pvc",
+      "type": "@swimmingPool",
+      "ground": "@aboveGround",
+      "place": "@outdoor"
+    }
+
+  },
+  "dependencies": [
+  ]
+}

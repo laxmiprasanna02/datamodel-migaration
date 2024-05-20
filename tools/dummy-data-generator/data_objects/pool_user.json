@@ -1,0 +1,38 @@
+{
+    "name": "pooluser",
+    "db": {
+        "type": "dynamodb",
+        "alias": "pool"
+    },
+    "fakerArguments": [
+        {
+            "created_ts": {
+                "min": 1555060163000,
+                "max": 1649761763000
+            }
+        },
+        {
+            "updated_ts": {
+                "min": 1555060163000,
+                "max": 1649761763000
+            }
+        }
+    ],
+    "primary_keys": [
+        "PK",
+        "SK"
+    ],
+    "dependencies": [
+        "pool",
+        "user"
+    ],
+    "dataObject": {
+        "PK": "@reference:$.pool.objects.*[{randomNumber}%len(@)].PK",
+        "SK": "@reference:$.user.objects.*[{randomNumber}%len(@)].PK",
+        "createdAt": "random_int:created_ts",
+        "updatedAt": "random_int:updated_ts",
+        "order": "random_int",
+        "accessLevel": "@owner",
+        "alias": "company"
+    }
+}

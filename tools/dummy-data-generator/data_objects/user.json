@@ -1,0 +1,47 @@
+{
+  "name": "user",
+  "db": {
+    "type": "dynamodb",
+    "alias": "user"
+  },
+  "fakerArguments": [
+    {"user_format":{"ext_word_list":[
+      "USER#102e8bdc-f5a9-4b9e-89b4-cbd45e3d4f79","USER#25943dd7-3c02-41e8-b459-d0790739ce66","USER#cbea73f8-9a60-4325-8efd-ca51f7219940",
+      "CONSUMER#44418379-c8ce-433c-af66-30270d2585a5","CONSUMER#dbbc3423-fbe0-45dd-a4c4-8f030a117181",
+      "CONSUMER#067a29af-469b-484e-aa02-538b0b3e94e8", "CONSUMER#2bf152dd-7e10-4950-b694-70abaa0ce889","CONSUMER#a824f5a5-7c42-4c77-a6f6-266979f41dac",
+      "CONSUMER#b7aef3a7-4d5c-40be-8970-343f3e172fe1","CONSUMER#b9381897-76ac-4445-ac52-774bfe5ad332",
+      "CONSUMER#e341a510-1ac3-49a2-ae0b-b8701342c66c","USER#617f3fec-bf64-4092-82fb-a98af4e3f3ba","USER#c49a87e9-5da4-44f3-8cf6-e3a59a4ca6cd","USER#f1116da5-02d1-469d-a71c-29a8dfbd16f5"]}},
+    {"created_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"updated_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"backup_code_format":{"text":"^^^^^^^^^^^^^^^^^"}},
+    {"temperature_units":{"ext_word_list":["celsius","fahrenheit"]}},
+    {"metric_system":{"ext_word_list":["metric","imperial","us"]}}
+  ],
+      "primary_keys": ["PK","SK"],
+
+  "dependencies": [],
+  "dataObject": {
+    "PK": "word:user_format",
+    "SK": "@###PK",
+    "email": "free_email",
+    "createdAt": "random_int:created_ts",
+    "updatedAt": "random_int:updated_ts",
+    "name": {"firstName": "first_name", "lastName": "last_name"},
+    "preferences": {
+      "notifications": {
+        "productNews": {
+          "email": "boolean",
+          "push": "boolean"
+        },
+        "recommendations": {
+          "email": "boolean",
+          "push": "boolean"
+        },
+        "information": {
+          "email": "boolean",
+          "push": "boolean"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "legaldocument",
+  "db": {
+    "type": "dynamodb",
+    "alias": "legaldocument"
+  },
+  "fakerArguments": [
+    {"legal_document_format":{"text":"LD#^^^^^^^^-^^^^-^^^^-^^^^-^^^^^^^^^^^^#VR#1.0.0"}},
+    {"created_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"updated_ts":{"min":1555060163000,"max": 1649761763000}},
+    {"services":{"ext_word_list":["SERVICE#PRO","SERVICE#MOBILE"]}}
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dataObject": {
+    "PK": "word:services",
+    "SK": "hexify:legal_document_format",
+    "type": "word",
+    "createdAt": "random_int:created_ts",
+    "updatedAt": "random_int:updated_ts",
+    "url": "url",
+    "name": "word",
+    "checksum": "md5"
+  },
+   "dependencies": [
+  ]
+}
