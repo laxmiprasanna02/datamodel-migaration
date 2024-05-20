@@ -1,0 +1,29 @@
+{
+  "name": "data-model-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-cdk/aws-glue": "^1.181.0",
+    "@aws-sdk/client-cognito-identity-provider": "3.183.0",
+    "@aws-sdk/client-dynamodb": "^3.172.0",
+    "aws-lambda": "^1.0.7",
+    "moment": "^2.29.1",
+    "uuid": "^9.0.0",
+    "yaml": "2.0.0-11",
+    "tool-audit-trail": "git+ssh://git@github.com:RiiotLabs/tool-audit-trail.git#dc4a96a470362767f9f292ab08eb0a6f8d573b12"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.104",
+    "@types/uuid": "^8.3.4",
+    "esbuild": "0.14.29",
+    "jest": "27.5.1",
+    "ts-jest": "27.1.4",
+    "typescript": "4.6.3"
+  }
+}
