@@ -1,0 +1,24 @@
+{
+  "name": "alert",
+  "db": {
+    "type": "dynamodb",
+    "alias": "alert"
+  },
+  "fakerArguments": [
+    {"alert_format":{"text":"ALERT#^^^^^^^^-^^^^-^^^^-^^^^-^^^^^^^^^^^^"}},
+    {"created_ts":{"end_datetime":100}},
+    {"updated_ts":{"end_datetime":100}},
+    {"legal_document_versions":{"ext_word_list":["1.0.0","1.0.1","1.0.2","1.0.3","1.0.4","1.0.5"]}}
+  ],
+  "dependencies": ["pool"],
+  "primary_keys": ["PK","SK"],
+  "dataObject": {
+    "PK": "@reference:$.pool.objects.*[{randomNumber}%len(@)].PK",
+    "SK": "hexify:alert_format",
+    "name": "word",
+    "created_at": "unix_time:created_ts",
+    "updated_at": "unix_time:updated_ts",
+    "device_id": "uuid4",
+    "json": "json"
+  }
+}

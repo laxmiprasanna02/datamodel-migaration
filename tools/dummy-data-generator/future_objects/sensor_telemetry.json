@@ -1,0 +1,36 @@
+{
+  "name": "sensortelemetry",
+  "db": {
+    "type": "timestream",
+    "alias": "sensortelemetry",
+    "structure": {
+      "dimension_attrs": ["device_id","pool_id","sensor_type","status","device_family","measure_type","config_file","sequence_id","metadata"],
+      "measure_name_attr": "measure_name",
+      "measure_value_name": "int_value",
+      "measure_value_attr": "value",
+      "measure_value_type": "BIGINT",
+      "time_attr": "timestamp",
+      "time_unit": "SECONDS"
+    }
+  },
+  "fakerArguments": [
+    {"ts_format":{"start_datetime":"-10h","end_datetime":"-5h"}},
+    {"measure_name_format":{"text":"component/#"}},
+    {"created_ts":{"end_datetime":100}},
+    {"updated_ts":{"end_datetime":100}}
+  ],
+  "primary_keys": ["device_id","pool_id","measure_name"],
+  "dependencies": ["pooldevice","configfile"],
+  "dataObject": {
+    "device_id": "@reference:$.pooldevice.objects.*[{randomNumber}%len(@)].SK",
+    "pool_id": "@reference:$.pooldevice.objects.*[{randomNumber}%len(@)].PK",
+    "sensor_type": "@temperature",
+    "status": "@ok",
+    "device_family": "@chlorinator",
+    "config_file": "@reference:$.configfile.objects.*[{randomNumber}%len(@)].PK+'#'+$.configfile.objects.*[{randomNumber}%len(@)].SK",
+    "timestamp": "unix_time:ts_format",
+    "measure_name": "bothify:measure_name_format",
+    "measure_type": "@int",
+    "value": "random_int",
+    "sequence_id": 0}
+}

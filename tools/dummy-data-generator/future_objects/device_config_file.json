@@ -1,0 +1,25 @@
+{
+  "name": "deviceconfigfile",
+  "db": {
+    "type": "dynamodb",
+    "alias": "deviceconfigfile"
+  },
+  "fakerArguments": [
+    {"device_config_file_sk_format":{"text":"PT#^^^^^^^^^^^^^^^#FW#^^^^^^^"}},
+    {"created_ts":{"end_datetime":100}},
+    {"updated_ts":{"end_datetime":100}},
+    {"config_file_format":{"text":"CF#^^^^^^^^-^^^^-^^^^-^^^^-^^^^^^^^^^^^"}},
+    {"config_file_versions":{"ext_word_list":["VR#1.0.0","VR#1.0.1","VR#1.0.2","VR#1.0.3","VR#1.0.4","VR#1.0.5"]}}
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dependencies": ["configfile"],
+  "dataObject": {
+    "PK": "@DC#CONNECTED",
+    "SK": "hexify:device_config_file_sk_format",
+    "created_at": "unix_time:created_ts",
+    "updated_at": "unix_time:updated_ts",
+    "config_file_id": "@reference:$.configfile.objects.*[{randomNumber}%len(@)].PK",
+    "config_file_minimum_version": "@reference:$.configfile.objects.*[{randomNumber}%len(@)].SK"
+  }
+}

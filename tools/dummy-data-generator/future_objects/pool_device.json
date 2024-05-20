@@ -1,0 +1,23 @@
+{
+  "name": "pooldevice",
+  "db": {
+    "type": "dynamodb",
+    "alias": "pool"
+  },
+  "fakerArguments": [
+    {"created_ts":{"end_datetime":100}},
+    {"updated_ts":{"end_datetime":100}}
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dependencies": ["pool","device"],
+  "dataObject": {
+    "PK": "@reference:$.pool.objects.*[{randomNumber}%len(@)].PK",
+    "SK": "@reference:$.device.objects.*[{randomNumber}%len(@)].PK+'#'+$.device.objects.*[{randomNumber}%len(@)].SK",
+    "created_at": "unix_time:created_ts",
+        "updated_at": "unix_time:updated_ts",
+    "alias": "word",
+    "device_id": "@###SK"
+
+   }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "devicedigitalsensor",
+  "db": {
+    "type": "dynamodb",
+    "alias": "device"
+  },
+  "fakerArguments": [
+
+        {"created_ts":{"end_datetime":100}},
+    {"updated_ts":{"end_datetime":100}}
+
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dependencies": ["device"],
+  "dataObject": {
+    "PK": "@reference:$.device.objects.*[{randomNumber}%len(@)].PK",
+    "SK": "@reference:$.device.objects.*[{randomNumber}%len(@)].SK+'#DIGITAL_SENSOR#00000000-0000-0000-0000-000000000000'",
+    "created_at": "unix_time:created_ts",
+    "updated_at": "unix_time:updated_ts",
+    "measure_name": "word",
+    "sensor_type": "@temperature",
+    "unit": "@celsius",
+    "attributes": "json",
+    "alias": "word"
+   }
+}

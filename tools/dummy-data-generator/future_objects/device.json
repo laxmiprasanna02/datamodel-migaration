@@ -1,0 +1,36 @@
+{
+  "name": "device",
+  "db": {
+    "type": "dynamodb",
+    "alias": "device"
+  },
+  "fakerArguments": [
+    {"device_id_format":{"text":"ID#^^^^^^^^^^^^^^^^^"}},
+    {"device_serial_number_format":{"text":"##################"}},
+    {"created_ts":{"end_datetime":100}},
+    {"updated_ts":{"end_datetime":100}},
+    {"device_type_format":{"ext_word_list":["DEV#CONNECTED","DEV#VIRTUAL","DEV#MANUAL","DEV#EXTERNAL"]}},
+    {"device_product_type_format":{"ext_word_list":["EPPVS","IQBRIDGE","BLUECONNECT","PUMP01"]}},
+    {"device_family_format":{"ext_word_list":["chlorinator","pump","robot","britge","light"]}},
+    {"fw_versions":{"ext_word_list":["1.0.0","1.0.1","1.0.2","1.0.3","1.0.4","1.0.5"]}}
+  ],
+    "primary_keys": ["PK","SK"],
+
+  "dataObject": {
+    "PK": "word:device_type_format",
+    "SK": "hexify:device_id_format",
+    "alias": "company",
+    "created_at": "unix_time:created_ts",
+    "updated_at": "unix_time:updated_ts",
+    "product_type": "word:device_product_type_format",
+    "family": "word:device_family_format",
+    "serialnumber": "numerify:device_serial_number_format",
+    "fw_version": "word:fw_versions",
+    "activation_date": "unix_time:created_ts",
+    "brand": "company",
+    "model": "word",
+    "production_data": "json",
+    "attributes": "json"
+  },
+  "dependencies": []
+}
