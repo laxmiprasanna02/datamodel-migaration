@@ -1,0 +1,14 @@
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+package-lock.json
+.idea
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+#Ignore package lock files
+lib/infrastructure/backend/package-lock.json
+package-lock.json
