@@ -1,0 +1,380 @@
+{
+  "pipeline_account": "608640075097",
+  "pipeline_region": "eu-west-1",
+  "apigw_account": "608640075097",
+  "apigw_region": "eu-west-1",
+  "awsiot_region": "eu-west-1",
+  "awsiot_account": "608640075097",
+  "git_branch": "master",
+  "project_name": "platform-emea-data-model",
+  "stage": "{stage}",
+  "global": {
+    "cicdStage": "prod",
+    "gitBranch": "master",
+    "awsAccount": "608640075097",
+    "awsRegion": "eu-west-1",
+    "projectName": "data-model"
+  },
+  "tags": {
+    "Main project": "EMEA EU-Cloud Development",
+    "Project name": "platform-emea-data-model",
+    "Project type": "platform",
+    "Customer": "Fluidra"
+  },
+  "preloadExternalVariables": [
+    {"name": "CognitoPROCustomMessage","ref": "{cicdStage}PlatformCognitoPROCustomMessage"},
+    {"name": "CognitoPRODefineAuthChallenge","ref": "{cicdStage}PlatformCognitoPRODefineAuthChallenge"},
+    {"name": "CognitoPROCreateAuthChallenge","ref": "{cicdStage}PlatformCognitoPROCreateAuthChallenge"},
+    {"name": "CognitoPROVerifyAuthChallengeResponse","ref": "{cicdStage}PlatformCognitoPROVerifyAuthChallengeResponse"},
+    {"name": "CognitoPROUserMigration","ref": "{cicdStage}PlatformCognitoPROUserMigration"},
+    {"name": "CognitoPROPreAuthentication","ref": "{cicdStage}PlatformCognitoPROPreAuthentication"},
+    {"name": "CognitoPROPostConfirmation","ref": "{cicdStage}PlatformCognitoPROPostConfirmation"},
+    {"name": "CognitoPROPostAuthentication","ref": "{cicdStage}PlatformCognitoPROPostConfirmation"},
+    {"name": "CognitoIAQCustomMessage","ref": "{cicdStage}PlatformCognitoIAQCustomMessage"},
+    {"name": "CognitoIAQDefineAuthChallenge","ref": "{cicdStage}PlatformCognitoIAQDefineAuthChallenge"},
+    {"name": "CognitoIAQCreateAuthChallenge","ref": "{cicdStage}PlatformCognitoIAQCreateAuthChallenge"},
+    {"name": "CognitoIAQVerifyAuthChallengeResponse","ref": "{cicdStage}PlatformCognitoIAQVerifyAuthChallengeResponse"},
+    {"name": "CognitoIAQUserMigration","ref": "{cicdStage}PlatformCognitoIAQUserMigration"},
+    {"name": "CognitoIAQPreAuthentication","ref": "{cicdStage}PlatformCognitoIAQPreAuthentication"},
+    {"name": "CognitoIAQPostConfirmation","ref": "{cicdStage}PlatformCognitoIAQPostConfirmation"},
+    {"name": "CognitoIAQPostAuthentication","ref": "{cicdStage}PlatformCognitoIAQPostConfirmation"}
+  ],
+  "s3Buckets": {
+    "scriptBucketName": {
+      "name": "{cicdStage}-scriptbucket-glue-job",
+      "exists": false
+    },
+    "jobOutputBucketName": {
+      "name": "{cicdStage}-job-output-bucket",
+      "exists": false
+    },
+    "spillBacket": {
+      "name": "quicksight-athena-ddb-spill",
+      "exists": false
+    },
+    "legalFiles": {
+      "exists": false,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-platform-legal-files-000"
+    },
+    "documents": {
+      "exists": true,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-platform-documents-000"
+    },
+    "configFiles": {
+      "exists": true,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-platform-configfiles-746"
+    },
+    "ruleErrors": {
+      "exists": true,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-iotrule-errors-000"
+    },
+    "otaFiles": {
+      "exists": true,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-fluidra-emea-ota-662"
+    },
+    "translations": {
+      "exists": true,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-translations-000"
+    },
+    "algorithmJobs": {
+      "exists": false,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-algorithm-jobs-000"
+    },
+    "magneticErrors": {
+      "exists": true,
+      "name": "eu-eu-west-1-{cicdStage}-{awsAccount}-timestream-magnetic-errs"
+    }
+  },
+  "dynamoDbs": {
+    "users": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-users",
+      "props": {
+        "gsi": [
+          "email"
+        ],
+        "ttl": "ttl",
+        "stream": "NEW_AND_OLD_IMAGES"
+      }
+    },
+    "accounts": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-accounts",
+      "props": {
+        "gsi": [
+          "email",
+          "firstName",
+          "lastName",
+          "country",
+          "stateProvinceRegion",
+          "cityTown",
+          "zipPostalCode"
+        ],
+        "ttl": "ttl",
+        "stream": "NEW_AND_OLD_IMAGES"
+      }
+    },
+    "pools": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-pools",
+      "props": {
+        "gsi": [
+          "code",
+          "deviceId",
+          {
+            "pk": "accountId",
+            "sk": "SK"
+          }
+        ],
+        "ttl": "ttl",
+        "stream": "NEW_AND_OLD_IMAGES"
+
+      }
+    },
+    "userEmailHistory": {
+      "exists": false,
+      "name": "EU-{cicdStage}-platform-user-email-history"
+    },
+    "archiveUsers": {
+      "exists": false,
+      "name": "EU-{cicdStage}-platform-archive-users",
+      "props": {
+        "gsi": ["email"],
+        "ttl": "ttl"
+      }
+    },
+    "archivePools": {
+      "exists": false,
+      "name": "EU-{cicdStage}-platform-archive-pools",
+      "props": {
+        "gsi": [
+          "code",
+          "deviceId"
+        ],
+        "ttl": "ttl"
+      }
+    },
+    "offlineShadows": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-offline_shadows"
+    },
+    "legalDocuments": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-legal-documents"
+    },
+    "devices": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-devices"
+    },
+    "alerts": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-alerts"
+    },
+    "configFiles": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-config-files",
+      "props": {
+        "gsi": [
+          {
+            "pk": "idPK",
+            "sk": "idSK"
+          }
+        ]
+      }
+    },
+    "wsConnectedClients": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-ws-connected-clients"
+    },
+    "wsSubscriptions": {
+      "exists": true,
+      "name": "EU-{cicdStage}-platform-ws-subscriptions",
+      "props": {
+        "gsi": [
+          "subscriptionId"
+        ]
+      }
+    },
+    "assistantJobs": {
+      "exists": false,
+      "name": "EU-{cicdStage}-platform-assistant-algorithm-jobs",
+      "props": {
+        "ttl": "ttl",
+        "stream": "NEW_AND_OLD_IMAGES"
+      }
+    }
+  },
+  "timestreams": {
+    "telemetry": {
+      "exists": false,
+      "name": "EU-{cicdStage}-platform-telemetry",
+      "table_names": [
+        {
+          "name": "sensor_values",
+          "details": {
+            "MagneticStoreRetentionPeriodInDays": "73000",
+            "MemoryStoreRetentionPeriodInHours": "168"
+          }
+        }
+      ]
+    },
+    "auditTrail": {
+      "exists": false,
+      "name": "EU-{cicdStage}-platform-audit-trail",
+      "table_names": [
+        {
+          "name": "audit_trail",
+          "details":{
+            "MagneticStoreRetentionPeriodInDays": "73000",
+            "MemoryStoreRetentionPeriodInHours": "168"
+          }
+        }
+      ]
+    },
+    "assistantJobs": {
+      "exists": false,
+      "name": "EU-{cicdStage}-platform-assistant-algorithm-jobs",
+      "table_names": [
+        {
+          "name": "algorithm_jobs",
+          "details":{
+            "MagneticStoreRetentionPeriodInDays": "73000",
+            "MemoryStoreRetentionPeriodInHours": "168"
+          }
+        }
+      ]
+    }
+  },
+  "cognitoPools": {
+    "PRO": {
+      "exists": true,
+      "userPoolId": "eu-west-1_Sf6n7t3a2",
+      "triggers": {
+        "CustomMessage": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-fluidraprousersfluidraprocognitotr-ME4ZeSfjUTO3",
+        "CreateAuthChallenge": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-fluidraprousersfluidraprocognitotr-ME4ZeSfjUTO3",
+        "DefineAuthChallenge": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-fluidraprousersfluidraprocognitotr-ME4ZeSfjUTO3",
+        "PreAuthentication": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-fluidraprousersfluidraprocognitotr-ME4ZeSfjUTO3",
+        "UserMigration": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-fluidraprousersfluidraprocognitotr-ME4ZeSfjUTO3",
+        "VerifyAuthChallengeResponse": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-fluidraprousersfluidraprocognitotr-ME4ZeSfjUTO3"
+      },
+      "Policies": {
+        "PasswordPolicy": {
+          "MinimumLength": 8,
+          "RequireUppercase": true,
+          "RequireLowercase": true,
+          "RequireNumbers": true,
+          "RequireSymbols": true,
+          "TemporaryPasswordValidityDays": 7
+        }
+      },
+      "UsernameAttributes": ["email"],
+      "poolName": "Fluidra Pro",
+
+      "callbackUrls": [
+        "http://localhost:4200/oauth2-redirect.html",
+        "https://toshihiro.herokuapp.com/swagger-ui/oauth2-redirect.html"
+      ],
+      "cognitoDomainPrefix": "fluidra-pro",
+      "groups": [
+        "disabled",
+        "administrator",
+        "customer",
+        "customer:e-commerce",
+        "customer:pro-app",
+        "customer:pro-app:diagnosis",
+        "customer:pro-app:chemist",
+        "customer:pro-app:installer",
+        "customer:pro-app:diagnosis:robot",
+        "cxusers",
+        "internal",
+        "technicalservice",
+        "prouser"
+      ],
+      "SES": {
+        "sesVerifiedDomain": "fluidra-emea.com",
+        "fromEmail": "no-reply.fluidrapro@fluidra-emea.com",
+        "fromName": "Fluidra PRO",
+        "sesRegion": "eu-west-1"
+      }
+    },
+    "IAQ": {
+      "exists": false,
+      "triggers": {
+        "CustomMessage": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-iaqualinkplususersiaqualinkcognito-Nn55uokuA6r0",
+        "CreateAuthChallenge": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-iaqualinkplususersiaqualinkcognito-Nn55uokuA6r0",
+        "DefineAuthChallenge": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-iaqualinkplususersiaqualinkcognito-Nn55uokuA6r0",
+         "PreAuthentication": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-iaqualinkplususersiaqualinkcognito-Nn55uokuA6r0",
+        "UserMigration": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-iaqualinkplususersiaqualinkcognito-Nn55uokuA6r0",
+        "VerifyAuthChallengeResponse": "arn:aws:lambda:{awsRegion}:{awsAccount}:function:MobileAppsStack-iaqualinkplususersiaqualinkcognito-Nn55uokuA6r0"
+      },
+      "Policies": {
+        "PasswordPolicy": {
+          "MinimumLength": 8,
+          "RequireUppercase": true,
+          "RequireLowercase": true,
+          "RequireNumbers": true,
+          "RequireSymbols": true,
+          "TemporaryPasswordValidityDays": 7
+        }
+      },
+      "poolName": "iAqualink+",
+      "callbackUrls": [
+        "http://localhost:4200/oauth2-redirect.html",
+        "https://toshihiro.herokuapp.com/swagger-ui/oauth2-redirect.html"
+      ],
+      "cognitoDomainPrefix": "fluidra-emea-consumer-users-prod",
+      "groups": ["administrator", "consumer", "disabled"],
+      "SES": {
+        "sesVerifiedDomain": "fluidrapool.io",
+        "fromEmail": "no-reply@fluidrapool.io",
+        "fromName": "Fluidra Pool",
+        "sesRegion": "eu-west-1"
+      }
+    }
+  },
+  "databaseNameIn": "{cicdStage}-dynamotogluedb-in",
+  "databaseNameOut": "{cicdStage}-s3togluedb-out",
+  "tableName": {
+    "usersTable": {
+      "dynamoTable": "EU-{cicdStage}-platform-users",
+      "glueTable": "eu_{cicdStage}_platform_users"
+    },
+    "poolsTable": {
+      "dynamoTable": "EU-{cicdStage}-platform-pools",
+      "glueTable": "eu_{cicdStage}_platform_pools"
+    },
+    "devicesTable": {
+      "dynamoTable": "EU-{cicdStage}-platform-devices",
+      "glueTable": "eu_{cicdStage}_platform_devices"
+    },
+    "configFiles": {
+      "dynamoTable": "EU-{cicdStage}-platform-config-files",
+      "glueTable": "eu_{cicdStage}_platform_config_files"
+    },
+    "alerts": {
+      "dynamoTable": "EU-{cicdStage}-platform-alerts",
+      "glueTable": "eu_{cicdStage}_platform_alerts"
+    }
+  },
+  "cronExpression": {
+    "crawlerdynamotoGlue": "cron(00 00 * * ? *)",
+    "glueJob": "cron(00 01 * * ? *)",
+    "s3ToGlue-Crawler": "cron(00 02 * * ? *)"
+  },
+  "dynamoToGlue-Crawler": "{cicdStage}-dynamotoGlue-crawler",
+  "glueToS3-Job": "{cicdStage}-GluetoS3-Job",
+  "s3ToGlue-Crawler": "{cicdStage}-S3toGlue-crawler",
+  "connecterFunctionName": "dynamocatalog",
+  "AUDIT_TRAIL": {
+    "PROJECT_NAME": "cognito_user_pools",
+    "SQS_URL": "https://sqs.eu-west-1.amazonaws.com/{awsAccount}/audit-trail-sqs",
+    "SQS_ARN": "arn:aws:sqs:eu-west-1:{awsAccount}:audit-trail-sqs"
+  },
+  "CLOUDFRONT_LEGAL_FILES": {
+    "domains": ["docs.fluidra-emea.com"],
+    "cert": "arn:aws:acm:us-east-1:608640075097:certificate/1bb2adf9-292a-4ee9-8aa9-53df984a6ca3"
+  },
+  "WAF_SECURITY_LIMITS": {
+    "max_reqs_allowed": 2000
+  }
+}
