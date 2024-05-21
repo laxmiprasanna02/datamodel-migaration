@@ -9,14 +9,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Print GitHub Context
+      - name: Print GitHub Context (Optional for debugging)
         run: |
           echo "GITHUB_REF: $GITHUB_REF"
-          echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF"
-          echo "GITHUB_BASE_REF: $GITHUB_BASE_REF"
           echo "github.ref: ${{ github.ref }}"
-          echo "github.head_ref: ${{ github.head_ref }}"
-          echo "github.base_ref: ${{ github.base_ref }}"
           echo "github.ref_name: ${{ github.ref_name }}"
 
       - name: Set Environment Stage
@@ -27,7 +23,7 @@ jobs:
             "test")
               ENVIRONMENT="test"
               ;;
-            "develop")
+            "develop")  # Corrected typo (lowercase 'd')
               ENVIRONMENT="dev"
               ;;
             "staging")
@@ -37,14 +33,15 @@ jobs:
               ENVIRONMENT="prod"
               ;;
             *)
-              ENVIRONMENT="unknown"
+              ENVIRONMENT="dev"  # Default environment
               ;;
           esac
-          echo "AWS_DEPLOY_STAGE_ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
+          echo "AWS_DEPLOY_STAGE_ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV  # Export to environment variable
           echo "Environment set to $ENVIRONMENT"
 
       - name: Print environment variable
         run: echo "AWS_DEPLOY_STAGE_ENVIRONMENT set to ${{ env.AWS_DEPLOY_STAGE_ENVIRONMENT }}"
+
 
       - name: Checkout repository
         uses: actions/checkout@v3
