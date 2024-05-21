@@ -3,10 +3,11 @@ name: CI/CD Workflow
 on:
   push:
     branches:
-      - master
-      - develop
-      - staging
-      - test
+      - '*'
+      # - master
+      # - develop
+      # - staging
+      # - test
    
 
 jobs:
