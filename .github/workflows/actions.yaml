@@ -31,8 +31,10 @@ jobs:
         run: |
           npm install
 
-      - name: Make install script executable and run it
+      - name: Convert install.sh to Unix format and run
         run: |
+          sudo apt-get install -y dos2unix
+          dos2unix ./install.sh
           chmod +x ./install.sh
           ./install.sh
 
