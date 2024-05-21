@@ -11,11 +11,25 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-west-1
-      AWS_DEPLOY_STAGE_ENVIRONMENT: ${{ (github.ref_name == 'test' && 'test') || (github.ref_name == 'develop' && 'dev') || (github.ref_name == 'staging' && 'stage') || (github.ref_name == 'master' && 'prod') || 'unknown' }}
+      # AWS_DEPLOY_STAGE_ENVIRONMENT: ${{ (github.ref_name == 'test' && 'test') || (github.ref_name == 'develop' && 'dev') || (github.ref_name == 'staging' && 'stage') || (github.ref_name == 'master' && 'prod') || 'unknown' }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
+      - name: Set Environment Stage
+        run: |
+          if [ "${{ github.ref_name }}" == "test" ]; then
+            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=test" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "develop" ]; then
+            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=dev" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "staging" ]; then
+            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=stage" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "master" ]; then
+            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=prod" >> $GITHUB_ENV
+          else
+            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=unknown" >> $GITHUB_ENV
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
