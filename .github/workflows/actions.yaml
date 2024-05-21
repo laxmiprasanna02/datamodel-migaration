@@ -11,24 +11,27 @@ jobs:
     steps:
       - name: Set Environment Stage
         run: |
-          echo "Current branch is ${{ github.ref_name }}"
-          if [ "${{ github.ref_name }}" == "test" ]; then
-            echo "Setting environment to test"
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=test" >> $GITHUB_ENV
-          elif [ "${{ github.ref_name }}" == "develop" ]; then
-            echo "Setting environment to dev"
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=dev" >> $GITHUB_ENV
-          elif [ "${{ github.ref_name }}" == "staging" ]; then
-            echo "Setting environment to stage"
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=stage" >> $GITHUB_ENV
-          elif [ "${{ github.ref_name }}" == "master" ]; then
-            echo "Setting environment to prod"
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=prod" >> $GITHUB_ENV
-          else
-            echo "Setting environment to unknown"
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=unknown" >> $GITHUB_ENV
-          fi
-
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "Current branch is $BRANCH_NAME"
+          case "$BRANCH_NAME" in
+            "test")
+              ENVIRONMENT="test"
+              ;;
+            "develop")
+              ENVIRONMENT="dev"
+              ;;
+            "staging")
+              ENVIRONMENT="stage"
+              ;;
+            "master")
+              ENVIRONMENT="prod"
+              ;;
+            *)
+              ENVIRONMENT="unknown"
+              ;;
+          esac
+          echo "AWS_DEPLOY_STAGE_ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
+          echo "Environment set to $ENVIRONMENT"
       - name: Print environment variable
         run: echo "AWS_DEPLOY_STAGE_ENVIRONMENT set to $AWS_DEPLOY_STAGE_ENVIRONMENT"
 
