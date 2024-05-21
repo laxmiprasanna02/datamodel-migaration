@@ -28,8 +28,8 @@ jobs:
             echo "AWS_DEPLOY_STAGE_ENVIRONMENT=unknown" >> $GITHUB_ENV
           fi
 
-      - name: Print environment variable
-        run: echo "Stage set to: ${{ env.AWS_DEPLOY_STAGE_ENVIRONMENT }}"
+      # - name: Print environment variable
+      #   run: echo "Stage set to: ${{ env.AWS_DEPLOY_STAGE_ENVIRONMENT }}"
 
       - name: Checkout repository
         uses: actions/checkout@v3
