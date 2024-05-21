@@ -4,11 +4,21 @@ on:
   push:
     branches:
       - '*'
-   
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Print GitHub Context
+        run: |
+          echo "GITHUB_REF: $GITHUB_REF"
+          echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF"
+          echo "GITHUB_BASE_REF: $GITHUB_BASE_REF"
+          echo "github.ref: ${{ github.ref }}"
+          echo "github.head_ref: ${{ github.head_ref }}"
+          echo "github.base_ref: ${{ github.base_ref }}"
+          echo "github.ref_name: ${{ github.ref_name }}"
+
       - name: Set Environment Stage
         run: |
           BRANCH_NAME="${{ github.ref_name }}"
@@ -32,9 +42,9 @@ jobs:
           esac
           echo "AWS_DEPLOY_STAGE_ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
           echo "Environment set to $ENVIRONMENT"
-      - name: Print environment variable
-        run: echo "AWS_DEPLOY_STAGE_ENVIRONMENT set to $AWS_DEPLOY_STAGE_ENVIRONMENT"
 
+      - name: Print environment variable
+        run: echo "AWS_DEPLOY_STAGE_ENVIRONMENT set to ${{ env.AWS_DEPLOY_STAGE_ENVIRONMENT }}"
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -75,7 +85,7 @@ jobs:
           cdk deploy --all --require-approval never
 
       - name: Slack Notification Start Build
-        if: ${{ github.event_name == 'push' }}
+        if: github.event_name == 'push'
         uses: 8398a7/action-slack@v3
         with:
           status: custom
