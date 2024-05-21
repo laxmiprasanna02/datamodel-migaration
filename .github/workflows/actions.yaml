@@ -1,0 +1,115 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - staging
+      - test
+   
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: eu-west-1
+      AWS_DEPLOY_STAGE_ENVIRONMENT: ${{ (github.ref_name == 'test' && 'test') || (github.ref_name == 'develop' && 'dev') || (github.ref_name == 'staging' && 'stage') || (github.ref_name == 'master' && 'prod') || 'unknown' }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          ./install.sh
+
+      - name: SonarQube Scan
+        run: |
+          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip -q sonar-scanner-cli-4.6.2.2472-linux.zip
+          export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
+          sonar-scanner \
+            -Dsonar.projectKey=platform-emea-data-model-${{ env.AWS_DEPLOY_STAGE_ENVIRONMENT }} \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://sonarqube.tools.emea-iot.aws.fluidra.com:9000 \
+            -Dsonar.login=${{ env.SONAR_TOKEN }} \
+            -Dsonar.projectBaseDir=./ \
+            -Dsonar.test.inclusions=tests/**/steps.ts \
+            -Dsonar.javascript.lcov.reportPaths=output/coverage/lcov.info \
+            -Dsonar.eslint.reportPaths=output/eslint.json
+
+      - name: Deploy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl gcc g++ make
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm install 16.3.0
+          nvm use 16.3.0
+          python3 -m venv .venv
+          source .venv/bin/activate
+          npm install -g aws-cdk
+          cdk synth
+          cdk bootstrap --force
+          cdk deploy --all --require-approval never
+
+      - name: Slack Notification Start Build
+        if: ${{ github.event_name == 'push' }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: repo,message,commit,author,action,eventName,ref,workflow,took
+          custom_payload: |
+            {
+              "attachments": [
+                {
+                  "color": "#FFFF00",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "Build *${{ github.run_number }}* for platform-emea-data-model is STARTING. :rocket:\n <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}> | View Action>"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+
+      - name: Slack Notification on Success or Failure
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,took
+          custom_payload: |
+            {
+              "attachments": [
+                {
+                  "color": "${{ job.status == 'success' && '#00FF00' || '#FF0000' }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "Deploy *${{ github.run_number }}* for platform-emea-data-model from branch ${{ github.ref_name }}\nresult: ${{ job.status }}. ${{ job.status == 'success' && ':sunny:' || ':thunder_cloud_and_rain:' }}\nBuild URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
