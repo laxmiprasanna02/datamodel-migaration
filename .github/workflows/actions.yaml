@@ -5,30 +5,37 @@ on:
     branches:
       - '*'
    
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-west-1
-      # AWS_DEPLOY_STAGE_ENVIRONMENT: ${{ (github.ref_name == 'test' && 'test') || (github.ref_name == 'develop' && 'dev') || (github.ref_name == 'staging' && 'stage') || (github.ref_name == 'master' && 'prod') || 'unknown' }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
       - name: Set Environment Stage
         run: |
-          if [ "${{ github.ref_name }}" == "test" ]; then
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=test" >> $GITHUB_ENV
-          elif [ "${{ github.ref_name }}" == "develop" ]; then
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=dev" >> $GITHUB_ENV
-          elif [ "${{ github.ref_name }}" == "staging" ]; then
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=stage" >> $GITHUB_ENV
-          elif [ "${{ github.ref_name }}" == "master" ]; then
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=prod" >> $GITHUB_ENV
-          else
-            echo "AWS_DEPLOY_STAGE_ENVIRONMENT=unknown" >> $GITHUB_ENV
-          fi
+          case "${{ github.ref_name }}" in
+            "test")
+              echo "AWS_DEPLOY_STAGE_ENVIRONMENT=test" >> $GITHUB_ENV
+              ;;
+            "develop")
+              echo "AWS_DEPLOY_STAGE_ENVIRONMENT=dev" >> $GITHUB_ENV
+              ;;
+            "staging")
+              echo "AWS_DEPLOY_STAGE_ENVIRONMENT=stage" >> $GITHUB_ENV
+              ;;
+            "master")
+              echo "AWS_DEPLOY_STAGE_ENVIRONMENT=prod" >> $GITHUB_ENV
+              ;;
+            *)
+              echo "AWS_DEPLOY_STAGE_ENVIRONMENT=unknown" >> $GITHUB_ENV
+              ;;
+          esac
+
+      - name: Print environment variable
+        run: echo "Stage: ${{ env.AWS_DEPLOY_STAGE_ENVIRONMENT }}"
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -51,11 +58,6 @@ jobs:
           dos2unix ./install.sh
           chmod +x ./install.sh
           ./install.sh
-
-      # The SonarQube Scan step is commented out; uncomment and modify if needed.
-      # - name: SonarQube Scan
-      #   run: |
-      #     sonar-scanner etc...
 
       - name: Deploy
         run: |
