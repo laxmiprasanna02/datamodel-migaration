@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Set Environment Stage
         run: |
+          echo "Current branch is ${{ github.ref_name }}"
           if [ "${{ github.ref_name }}" == "test" ]; then
             echo "Setting environment to test"
             echo "AWS_DEPLOY_STAGE_ENVIRONMENT=test" >> $GITHUB_ENV
