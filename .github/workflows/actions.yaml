@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - '*'
-      # - master
-      # - develop
-      # - staging
-      # - test
    
 
 jobs:
@@ -21,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
@@ -34,22 +30,16 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
+
+      - name: Make install script executable and run it
+        run: |
+          chmod +x ./install.sh
           ./install.sh
 
+      # The SonarQube Scan step is commented out; uncomment and modify if needed.
       # - name: SonarQube Scan
       #   run: |
-      #     wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-      #     unzip -q sonar-scanner-cli-4.6.2.2472-linux.zip
-      #     export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
-      #     sonar-scanner \
-      #       -Dsonar.projectKey=platform-emea-data-model-${{ env.AWS_DEPLOY_STAGE_ENVIRONMENT }} \
-      #       -Dsonar.sources=. \
-      #       -Dsonar.host.url=http://sonarqube.tools.emea-iot.aws.fluidra.com:9000 \
-      #       -Dsonar.login=${{ env.SONAR_TOKEN }} \
-      #       -Dsonar.projectBaseDir=./ \
-      #       -Dsonar.test.inclusions=tests/**/steps.ts \
-      #       -Dsonar.javascript.lcov.reportPaths=output/coverage/lcov.info \
-      #       -Dsonar.eslint.reportPaths=output/eslint.json
+      #     sonar-scanner etc...
 
       - name: Deploy
         run: |
