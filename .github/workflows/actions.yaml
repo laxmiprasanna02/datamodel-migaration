@@ -1,5 +1,5 @@
 
-name: CI/CD Workflow
+name: CI/CD Workflow of data
 
 on:
   push:
