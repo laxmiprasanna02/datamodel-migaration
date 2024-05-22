@@ -16,7 +16,7 @@
     "moment": "^2.29.1",
     "uuid": "^9.0.0",
     "yaml": "2.0.0-11",
-    "tool-audit-trail": "git+ssh://git@github.com:RiiotLabs/tool-audit-trail.git#dc4a96a470362767f9f292ab08eb0a6f8d573b12"
+    "tool-audit-trail": "git+ssh://git@github.com:IoT-APAC-Platform/tool-audit-trail.git#dc4a96a470362767f9f292ab08eb0a6f8d573b12"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.104",
